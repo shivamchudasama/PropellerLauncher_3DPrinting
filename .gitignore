@@ -1,0 +1,3 @@
+# Local tool config
+.codex/
+.claude/settings.local.json
