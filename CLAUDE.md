@@ -10,7 +10,13 @@ Do not ask on turns that change nothing here (questions, inspection, small edits
 
 ## Repository nature
 
-A **3D printing asset repository** for a propeller launcher. It currently holds only pristine upstream STLs — no build system, no scripts, no derivative designs yet. Do not fabricate build/lint/test commands.
+A **3D printing asset repository** for a propeller launcher. It holds pristine upstream STLs and one derivative design, `Custom_HybridLauncher/`. That design's STLs are **generated** by Python scripts from the originals — edit the scripts, never the output STLs by hand. There is no package manifest or CI. The scripts need `trimesh`, `manifold3d`, `shapely` and `numpy`.
+
+```
+python Custom_HybridLauncher/src/build.py     # all STLs (--clearance X --stages-only to retune gears)
+python Custom_HybridLauncher/src/check.py     # verification; exit 1 on failure (~4 min)
+python Custom_HybridLauncher/src/assemble.py  # Assembly.glb (animated)
+```
 
 ## Layout
 
@@ -18,11 +24,19 @@ Pristine upstream files live in `Original_<Author>/` directories. Derivative wor
 
 - `Original_Kocyns/` — 9 STLs (`obj_1` … `obj_9`, Czech part names).
 - `Original_LukasHannert/` — 23 STLs for a three-stage planetary gearbox launcher: housings, internal toothing, sun/planet gears and carriers per stage, shafts, two propellers (100 mm, 67.4 mm). `Upper Housing_original_backup.stl` is an upstream variant kept alongside `Upper Housing.stl`.
+- `Custom_HybridLauncher/` — Kocyns print-in-place stages with Lukas-style 18T herringbone gears, the Lukas propeller adapter nose and the Lukas 100 mm propeller. Contents:
+  - `src/herringbone.py` — gear geometry
+  - `src/build.py` — STLs, with parameters at the top
+  - `src/check.py` — verification
+  - `src/assemble.py` — the animated GLB
+  - the generated STLs and `Assembly.glb`
+  - `README.md` — print and assembly notes
+- `B3D_Labs.svg` — the user's branding logo (single even-odd path), engraved into the custom handle. `build.py` reads it from the repo root.
 
 ## Git
 
 Remote `github.com/shivamchudasama/PropellerLauncher_3DPrinting`, default branch `main`.
 
-- Binaries are tracked with **Git LFS** (`.gitattributes` routes `*.stl`, `*.3mf`, `*.pdf`). A new binary extension needs a `.gitattributes` entry **before** its first commit, or it lands in history as a full blob — and GitHub rejects any blob over 100 MB (`Stage 2 Planetary Gear and Axle.stl` is 111 MB).
-- ~520 MB of STLs against GitHub's free 1 GB LFS storage / 1 GB monthly bandwidth — a single full clone uses half the monthly bandwidth.
+- Binaries are tracked with **Git LFS** (`.gitattributes` routes `*.stl`, `*.3mf`, `*.pdf`, `*.glb`). A new binary extension needs a `.gitattributes` entry **before** its first commit, or it lands in history as a full blob — and GitHub rejects any blob over 100 MB (`Stage 2 Planetary Gear and Axle.stl` is 111 MB).
+- ~520 MB of original STLs plus ~165 MB generated in `Custom_HybridLauncher/` against GitHub's free 1 GB LFS storage / 1 GB monthly bandwidth. A single full clone uses most of the monthly bandwidth, and every regenerated STL committed adds a new LFS object, so commit regenerated outputs sparingly.
 - `.gitignore` excludes local tool config (`.codex/`, `.claude/settings.local.json`).
