@@ -21,14 +21,14 @@ The handle's bottom face carries an engraved B3D Labs logo.
 | `Coupon_Clearance_0.15/0.20/0.25.stl` | test | one gear set at three flank clearances (1/2/3 notches) |
 | `Assembly.glb` | — | assembled view, animated (see below); housings translucent |
 
-Gears are **18/18/54 herringbone** (module 0.998, 35° helix, 0.20 mm flank clearance). They sit inside the Kocyns 45° retention cones. The ratio stays 4:1 per stage.
+Gears are **18/18/54 herringbone** (module 0.998, 35° helix, 0.15 mm flank clearance). They sit inside the Kocyns 45° retention cones. The ratio stays 4:1 per stage.
 
 ## Printing
 
 - 0.4 mm nozzle, 0.2 mm layers, no supports.
 - Print parts in the orientation of the file. Stages print sun-side down, the adapter hex-down, and the handle logo-down.
 - **Print the coupons first.** Pick the clearance that turns freely without wobble.
-  - If it isn't 0.20, rebuild the stages with `python src/build.py --clearance <value> --stages-only`.
+  - If it isn't 0.15, rebuild the stages with `python src/build.py --clearance <value> --stages-only`.
 - After printing, break each stage free by turning the carrier hex while holding the housing.
 
 ## Assembly (handle down, propeller up)

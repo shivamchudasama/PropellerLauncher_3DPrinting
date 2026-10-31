@@ -37,7 +37,7 @@ CENTRE = 17.96             # Kocyns carrier pin radius (measured)
 MODULE = 2 * CENTRE / (2 * TEETH)
 HA, HF = 0.85, 1.05        # short addendum for print-in-place
 HELIX = 35.0               # Lukas helix angle, degrees
-CLEARANCE = 0.20           # gap between mating flanks, mm
+CLEARANCE = 0.15           # gap between mating flanks, mm
 FACE = 12.0                # gear face width = Kocyns stage gear height
 N_DIV = 14                 # extrusion slices per herringbone half
 
