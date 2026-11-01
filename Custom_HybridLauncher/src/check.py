@@ -14,8 +14,8 @@ import trimesh
 from shapely.geometry import MultiPolygon, Polygon
 from shapely import affinity
 
-from build import (CENTRE, CLEARANCE, KOC, LUK, OUT, RING_TEETH, STAGES,
-                   TEETH, to_manifold)
+from build import (CENTRE, KOC, LUK, OUT, RING_TEETH, STAGES, TEETH,
+                   stage_file, to_manifold)
 
 FAILS = []
 
@@ -144,7 +144,7 @@ def outline_at(tm, z, centre):
 
 def check_interfaces():
     print("\nInterfaces")
-    stage1 = trimesh.load(OUT / "Stage1_PropEnd_PIP.stl", force="mesh")
+    stage1 = trimesh.load(stage_file("Stage1_PropEnd_PIP"), force="mesh")
     sun = classify(stage1.split(only_watertight=False))["sun"]
     adapter = trimesh.load(OUT / "Propeller_Adapter.stl", force="mesh")
     report(adapter.is_watertight and len(adapter.split()) == 1,
@@ -184,8 +184,8 @@ def check_interfaces():
 
 
 def main():
-    for name in STAGES:
-        check_assembly(name, CLEARANCE, 6)
+    for path in sorted(OUT.glob("Stage*_PIP_*.stl")):  # every clearance set
+        check_assembly(path.stem, float(path.stem.rsplit("_", 1)[1]), 6)
     for c in (0.15, 0.20, 0.25):
         check_assembly(f"Coupon_Clearance_{c:.2f}", c, 5)
     check_interfaces()

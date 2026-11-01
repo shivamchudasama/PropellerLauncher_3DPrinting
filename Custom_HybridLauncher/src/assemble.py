@@ -20,7 +20,7 @@ import manifold3d as m3
 import trimesh
 from shapely import affinity
 
-from build import OUT, to_manifold
+from build import OUT, stage_file, to_manifold
 from check import best_fit, classify, hole_at, outline_at
 
 TOUCH = 1e-3  # mm3 of overlap that counts as contact
@@ -62,7 +62,7 @@ def seat(moving, fixed, z_hi, z_lo, down=True):
 
 def stage_parts(name):
     """-> [(kind, speed, manifold)]; a planet's speed is its carrier's."""
-    tm = trimesh.load(OUT / f"{name}.stl", force="mesh")
+    tm = trimesh.load(stage_file(name), force="mesh")
     p = classify(tm.split(only_watertight=False))
     c, s = STAGE_SPEED[name]
     return [("housing", 0, to_manifold(p["ring"])),
@@ -103,7 +103,7 @@ def main():
 
     # adapter: hex up into the Stage1 sun bore from below; turn hex to fit
     sun1 = next(m for k, _, m in s1 if k == "sun")
-    sun_tm = trimesh.load(OUT / "Stage1_PropEnd_PIP.stl", force="mesh")
+    sun_tm = trimesh.load(stage_file("Stage1_PropEnd_PIP"), force="mesh")
     sun_tm = classify(sun_tm.split(only_watertight=False))["sun"]
     bore = hole_at(sun_tm, 6.0, np.zeros(2))
     ad_tm = trimesh.load(OUT / "Propeller_Adapter.stl")

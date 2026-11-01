@@ -29,7 +29,7 @@ Each stage is an 18/18/54 herringbone planetary (4:1). It keeps the Kocyns 45° 
 | File | Qty |
 |---|---|
 | `Coupon_Clearance_0.15.stl`, `_0.20.stl`, `_0.25.stl` | print these first: test gear sets that check your printer's tolerance |
-| `Stage1_PropEnd_PIP.stl`, `Stage2_Middle_PIP.stl`, `Stage3_HandleEnd_PIP.stl` | 1 each |
+| `Stage1_PropEnd_PIP_0.20.stl`, `Stage2_Middle_PIP_0.20.stl`, `Stage3_HandleEnd_PIP_0.20.stl` | 1 each (or the `_0.25` set if the 0.20 coupon binds) |
 | `Handle_B3D.stl`, `Propeller_Adapter.stl` | 1 each |
 | `Propeller_100mm.stl` | 1 or more |
 
@@ -46,7 +46,8 @@ Open it in any glTF viewer that plays animations, such as [Babylon.js Sandbox](h
 The hybrid STLs are generated from the original files by Python scripts in [`Custom_HybridLauncher/src/`](Custom_HybridLauncher/src/). Gear clearance, helix angle and tooth count are parameters at the top of `build.py`. You need `trimesh`, `manifold3d`, `shapely` and `numpy`.
 
 ```
-python Custom_HybridLauncher/src/build.py     # generate all STLs
+python Custom_HybridLauncher/src/build.py     # generate all STLs (stages at 0.20 mm clearance)
+python Custom_HybridLauncher/src/build.py --clearance 0.25 --stages-only   # extra Stage*_PIP_0.25.stl set
 python Custom_HybridLauncher/src/check.py     # verify: watertight, no fused parts, gears mesh, parts fit
 python Custom_HybridLauncher/src/assemble.py  # generate the animated Assembly.glb
 ```

@@ -6,8 +6,8 @@ herringbone teeth (Lukas Hannert style). The propeller adapter joins the
 Kocyns hex shank/collar to the Lukas splined, coned nose. The handle gets a
 closed bottom face with the B3D Labs logo engraved into it.
 
-    python build.py                    # stages at CLEARANCE, adapter, coupons
-    python build.py --clearance 0.25   # rebuild stages with another clearance
+    python build.py                    # Stage*_PIP_<CLEARANCE>.stl, adapter, coupons
+    python build.py --clearance 0.25   # another stage set, Stage*_PIP_0.25.stl
 """
 import argparse
 import math
@@ -37,7 +37,7 @@ CENTRE = 17.96             # Kocyns carrier pin radius (measured)
 MODULE = 2 * CENTRE / (2 * TEETH)
 HA, HF = 0.85, 1.05        # short addendum for print-in-place
 HELIX = 35.0               # Lukas helix angle, degrees
-CLEARANCE = 0.15           # gap between mating flanks, mm
+CLEARANCE = 0.20           # flank gap per layer, mm (x cos 35 deg normal to flank)
 FACE = 12.0                # gear face width = Kocyns stage gear height
 N_DIV = 14                 # extrusion slices per herringbone half
 
@@ -53,6 +53,11 @@ STAGES = {
     "Stage2_Middle_PIP": "obj_5_ruco_V5_mezikus.stl",
     "Stage3_HandleEnd_PIP": "obj_7_ruco_V5.stl",
 }
+
+
+def stage_file(name, clearance=CLEARANCE):
+    """Generated stage STL; its clearance is part of the name."""
+    return OUT / f"{name}_{clearance:.2f}.stl"
 
 
 # --- mesh conversion ---------------------------------------------------------
@@ -273,7 +278,8 @@ def main():
     print(f"module {MODULE:.4f}, clearance {args.clearance}")
     gears = gear_set(args.clearance)
     for name, src in STAGES.items():
-        export(build_stage(KOC / src, gears), name)
+        export(build_stage(KOC / src, gears),
+               stage_file(name, args.clearance).stem)
     if args.stages_only:
         return
     export([build_adapter()], "Propeller_Adapter")

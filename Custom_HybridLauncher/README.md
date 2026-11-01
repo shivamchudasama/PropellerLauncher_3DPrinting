@@ -12,23 +12,26 @@ The handle's bottom face carries an engraved B3D Labs logo.
 
 | File | Prints | Source |
 |---|---|---|
-| `Stage1_PropEnd_PIP.stl` | 1 | Kocyns `obj_6`, gears replaced |
-| `Stage2_Middle_PIP.stl` | 1 | Kocyns `obj_5`, gears replaced |
-| `Stage3_HandleEnd_PIP.stl` | 1 | Kocyns `obj_7`, gears replaced |
+| `Stage1_PropEnd_PIP_<c>.stl` | 1 | Kocyns `obj_6`, gears replaced |
+| `Stage2_Middle_PIP_<c>.stl` | 1 | Kocyns `obj_5`, gears replaced |
+| `Stage3_HandleEnd_PIP_<c>.stl` | 1 | Kocyns `obj_7`, gears replaced |
+
+`<c>` is the flank clearance: `0.20` (default) or `0.25` (if 0.20 binds). Print one set.
 | `Handle_B3D.stl` | 1 | Kocyns `obj_1`, bottom recess closed, logo engraved 0.6 mm |
 | `Propeller_Adapter.stl` | 1 | Kocyns `obj_8` hex + collar, Lukas `Adapter` spline + nose |
 | `Propeller_100mm.stl` | 1+ | Lukas, unchanged |
 | `Coupon_Clearance_0.15/0.20/0.25.stl` | test | one gear set at three flank clearances (1/2/3 notches) |
 | `Assembly.glb` | — | assembled view, animated (see below); housings translucent |
 
-Gears are **18/18/54 herringbone** (module 0.998, 35° helix, 0.15 mm flank clearance). They sit inside the Kocyns 45° retention cones. The ratio stays 4:1 per stage.
+Gears are **18/18/54 herringbone** (module 0.998, 35° helix, 0.20 mm flank clearance per layer, about 0.165 mm measured square to the slanted flank). 0.15 mm seized in a test print. They sit inside the Kocyns 45° retention cones. The ratio stays 4:1 per stage.
 
 ## Printing
 
 - 0.4 mm nozzle, 0.2 mm layers, no supports.
 - Print parts in the orientation of the file. Stages print sun-side down, the adapter hex-down, and the handle logo-down.
 - **Print the coupons first.** Pick the clearance that turns freely without wobble.
-  - If it isn't 0.15, rebuild the stages with `python src/build.py --clearance <value> --stages-only`.
+  - Print the `_0.20` or `_0.25` stage set to match.
+  - For any other value, `python src/build.py --clearance <value> --stages-only` writes a `Stage*_PIP_<value>.stl` set.
 - After printing, break each stage free by turning the carrier hex while holding the housing.
 
 ## Assembly (handle down, propeller up)
